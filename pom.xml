@@ -6,7 +6,7 @@
 	<groupId>com.int492.cifarclssfr</groupId>
 	<artifactId>imageclassfr</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>Cifar10ClassifierService</name>
 	<description>Demo project for Spring Boot</description>
@@ -60,6 +60,17 @@
 			<groupId>org.deeplearning4j</groupId>
 			<artifactId>deeplearning4j-ui_2.10</artifactId>
 			<version>${dl4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>2.0.3.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.9.0</version>
+			<type>jar</type>
 		</dependency>
 	</dependencies>
 
