@@ -1,6 +1,5 @@
 package com.int492.cifarclssfr.imageclassfr.controller;
 
-import com.int492.cifarclssfr.imageclassfr.configuration.RedisConfiguration;
 import com.int492.cifarclssfr.imageclassfr.core.ClassificationCore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,10 +26,11 @@ public class InitializeController {
         public void run() {
             while(true){
                 try {
-                    /*jedis.set(String.valueOf(System.currentTimeMillis()),ClassificationCore.identifyByFile(new File("testimg/ship1.jpg")).toString());
-                    System.out.println(jedis.info());
-                    */System.out.println(ClassificationCore.identifyByFile(new File("testimg/ship1.jpg")).toString());
-                    System.out.println(jedis.get("1524726659155"));
+                    jedis.set("@"+String.valueOf(System.currentTimeMillis()),ClassificationCore.identifyByFile(new File("testimg/ship1.jpg")).toString());
+                    System.out.println(jedis.keys("@*").toString());
+
+                   /* System.out.println(ClassificationCore.identifyByFile(new File("testimg/ship1.jpg")).toString());
+                    System.out.println(jedis.get("1524726659155"));*/
                     /* TODO Redis work logic here*/
                     Thread.sleep(SLEEP);
                 } catch (InterruptedException e) {

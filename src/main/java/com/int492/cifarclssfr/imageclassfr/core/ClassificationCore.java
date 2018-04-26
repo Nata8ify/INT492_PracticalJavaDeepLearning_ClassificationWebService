@@ -24,7 +24,6 @@ public class ClassificationCore {
         return predict4FullPredictionModel(predictedINDArray);
     }
 
-
     /** @return index of cifar10's predicted INDArray. */
     private static Number[] predict4IndexNConfidentialPct(INDArray predictedINDArray){
         int maxPredictedLabelIndex = 0;
