@@ -8,6 +8,8 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ClassificationCore {
 
@@ -22,6 +24,22 @@ public class ClassificationCore {
         INDArray predictedINDArray = cifar10Model.output(image);
         //System.out.println(predictedINDArray);
         return predict4FullPredictionModel(predictedINDArray);
+    }
+
+    /** @return prediction detail from predict set */
+    public static LinkedHashMap<String ,String> identifyByFilePath(LinkedHashMap<String, String> toPredictedMap){
+        toPredictedMap.forEach((sessId, path) -> {
+            System.out.println(sessId + " : " + path);
+            /*try {
+                File imageFile = new File(path);
+                path = identifyByFile(imageFile).toString();
+                imageFile.delete();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+            /* TODO : You may activate this when ready. */
+        });
+        return toPredictedMap;
     }
 
     /** @return index of cifar10's predicted INDArray. */

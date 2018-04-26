@@ -8,6 +8,10 @@ import redis.clients.jedis.Jedis;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -20,30 +24,33 @@ public class InitializeController {
     private final Executor EXC = Executors.newSingleThreadExecutor();
     private final Runnable R = new Runnable() {
 
-        private final long SLEEP = 3000l; /* 1 Second */
+        private final long SLEEP = 3000l; /* 3 Second */
+        private LinkedHashMap<String, String> toPredictsMap;
 
         @Override
         public void run() {
-            while(true){
+            toPredictsMap = new LinkedHashMap<>();
+            while (true) {
+                //jedis.set("@"+String.valueOf(System.currentTimeMillis()), String.valueOf(System.currentTimeMillis()/100 ));
                 try {
-                    jedis.set("@"+String.valueOf(System.currentTimeMillis()),ClassificationCore.identifyByFile(new File("testimg/ship1.jpg")).toString());
-                    System.out.println(jedis.keys("@*").toString());
-
-                   /* System.out.println(ClassificationCore.identifyByFile(new File("testimg/ship1.jpg")).toString());
-                    System.out.println(jedis.get("1524726659155"));*/
+                    for (String key : jedis.keys("*@*")) {
+                        toPredictsMap.put(key.substring(1), jedis.get(key));
+                        ClassificationCore.identifyByFilePath(toPredictsMap);
+                        jedis.del(key);
+                    }
                     /* TODO Redis work logic here*/
                     Thread.sleep(SLEEP);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                    System.out.println("Serious exception caused thread to be stopped. " + e.getMessage());
                     e.printStackTrace();
                 }
+                toPredictsMap.clear();
             }
         }
     };
 
     @PostMapping("/init")
-    public String initilaize(){
+    public String initilaize() {
         EXC.execute(R);
         return "home";
     }
