@@ -35,8 +35,8 @@ public class InitializeController {
                 try {
                     for (String key : jedis.keys("*@*")) {
                         toPredictsMap.put(key.substring(1), jedis.get(key));
-                        ClassificationCore.identifyByFilePath(toPredictsMap);
                         jedis.del(key);
+                        ClassificationCore.identifyByFilePath(toPredictsMap);
                     }
                     /* TODO Redis work logic here*/
                     Thread.sleep(SLEEP);
