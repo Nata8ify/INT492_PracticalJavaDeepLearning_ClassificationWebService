@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import redis.clients.jedis.Jedis;
 
@@ -37,7 +38,7 @@ public class InitializeController {
                     valueKeySet = jedis.keys("@*"); /* Let's get any key which starts with '@' at first index. */
                     if(valueKeySet.isEmpty()){logger.info("Waiting new coming task...");continue;} /* No '@'? then no task... do skip. */
                     else {logger.info("New coming task ["+valueKeySet.size()+"] <= "+valueKeySet.toString());}
-                    for (String key : valueKeySet) { /* Have '@' the do a tasks for many as possible. */
+                    for (String key : valueKeySet) { /* Have '@' then do a tasks for many as possible. */
                         jedis.set(key.substring(1), ClassificationCore.identifyByFilePath(jedis.get(key)).toString()); /* GET FILE BY FILE PATH TO PREDICT AND RETURN THE PREDICTION MODEL... */
                         jedis.del(key); /* Delete '@' key... it's done.*/
                     }
@@ -59,4 +60,8 @@ public class InitializeController {
         return "home";
     }
 
+    @GetMapping("/")
+    public String home(){
+        return "home";
+    }
 }
