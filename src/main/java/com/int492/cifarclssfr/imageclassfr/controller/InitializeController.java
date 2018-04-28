@@ -43,6 +43,7 @@ public class InitializeController {
                         jedis.del(key);
                         ClassificationCore.identifyByFilePath(toPredictsMap);
                     }
+                    logger.info("Continue... "+System.currentTimeMillis());
                     /* TODO Redis work logic here*/
                     Thread.sleep(SLEEP);
                 } catch (InterruptedException e) {
