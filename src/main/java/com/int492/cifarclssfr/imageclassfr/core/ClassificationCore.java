@@ -44,8 +44,8 @@ public class ClassificationCore {
 
     /** @return prediction detail from predict set */
     public static PredictionModel identifyByFilePath(String path) throws IOException {
-        return new PredictionModel(999, "UFO", 99.99);
-        //return identifyByFile(new File(path));
+//        return new PredictionModel(999, "UFO", 99.99);
+        return identifyByFile(new File(path));
     }
 
     /** @return index of cifar10's predicted INDArray. */
