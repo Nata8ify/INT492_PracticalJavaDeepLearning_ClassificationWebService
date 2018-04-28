@@ -36,6 +36,7 @@ public class InitializeController {
                     Thread.sleep(SLEEP); /* Sleep for 3 secs. */
                     valueKeySet = jedis.keys("*@*"); /* Let's get any key which contains '@' at first index. */
                     if(valueKeySet.isEmpty()){logger.info("Waiting new coming task...");continue;} /* No '@'? then no task... do skip. */
+                    else {logger.info("New coming task = "+valueKeySet.toString());}
                     for (String key : valueKeySet) { /* Have '@' the do a tasks for many as possible. */
                         jedis.set(key.substring(1), ClassificationCore.identifyByFilePath(jedis.get(key)).toString()); /* GET FILE BY FILE PATH TO PREDICT AND RETURN THE PREDICTION MODEL... */
                         jedis.del(key); /* Delete '@' key... it's done.*/
