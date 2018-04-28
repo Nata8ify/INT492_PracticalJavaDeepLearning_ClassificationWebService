@@ -26,7 +26,7 @@ public class InitializeController {
     private final Executor EXC = Executors.newSingleThreadExecutor();
     private final Runnable R = new Runnable() {
 
-        private final long SLEEP = 3000l; /* 3 Second */
+        private final long SLEEP = 10000l; /* 3 Second */
         private Set<String> valueKeySet;
         @Override
         public void run() {
@@ -36,12 +36,12 @@ public class InitializeController {
                     Thread.sleep(SLEEP); /* Sleep for 3 secs. */
                     valueKeySet = jedis.keys("*@*"); /* Let's get any key which contains '@' at first index. */
                     if(valueKeySet.isEmpty()){logger.info("Waiting new coming task...");continue;} /* No '@'? then no task... do skip. */
-                    else {logger.info("New coming task = "+valueKeySet.toString());}
+                    else {logger.info("New coming task ["+valueKeySet.size()+"] <= "+valueKeySet.toString());}
                     for (String key : valueKeySet) { /* Have '@' the do a tasks for many as possible. */
                         jedis.set(key.substring(1), ClassificationCore.identifyByFilePath(jedis.get(key)).toString()); /* GET FILE BY FILE PATH TO PREDICT AND RETURN THE PREDICTION MODEL... */
                         jedis.del(key); /* Delete '@' key... it's done.*/
                     }
-                    logger.info("Return... "+jedis.keys("*").toString()); /* Print returned result. */
+                    logger.info("Return... ["+valueKeySet.size()+"] => "+jedis.keys("*").toString()); /* Print returned result. */
                 } catch (InterruptedException e) {
                     logger.info("Serious exception caused thread to be stopped. " + e.getMessage());
                     e.printStackTrace();
