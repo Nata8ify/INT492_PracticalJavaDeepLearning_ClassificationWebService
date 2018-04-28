@@ -26,7 +26,7 @@ public class InitializeController {
     private final Executor EXC = Executors.newSingleThreadExecutor();
     private final Runnable R = new Runnable() {
 
-        private final long SLEEP = 10000l; /* 3 Second */
+        private final long SLEEP = 3000l; /* 3 Second */
         private Set<String> valueKeySet;
         @Override
         public void run() {
@@ -34,7 +34,7 @@ public class InitializeController {
                 //jedis.set("@"+String.valueOf(System.currentTimeMillis()), String.valueOf(System.currentTimeMillis()/100 ));
                 try {
                     Thread.sleep(SLEEP); /* Sleep for 3 secs. */
-                    valueKeySet = jedis.keys("*@*"); /* Let's get any key which contains '@' at first index. */
+                    valueKeySet = jedis.keys("@*"); /* Let's get any key which starts with '@' at first index. */
                     if(valueKeySet.isEmpty()){logger.info("Waiting new coming task...");continue;} /* No '@'? then no task... do skip. */
                     else {logger.info("New coming task ["+valueKeySet.size()+"] <= "+valueKeySet.toString());}
                     for (String key : valueKeySet) { /* Have '@' the do a tasks for many as possible. */
